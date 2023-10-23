@@ -1,0 +1,30 @@
+{
+  "name": "@jiff/crypto",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "Greg Frasco <hicsail@bu.edu>",
+  "homepage": "https://github.com/multiparty/jiff-lite#readme",
+  "license": "MIT",
+  "main": "lib/crypto.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/multiparty/jiff-lite.git"
+  },
+  "scripts": {
+    "build": "tsc",
+    "test": "node ./__tests__/crypto.test.js"
+  },
+  "bugs": {
+    "url": "https://github.com/multiparty/jiff-lite/issues"
+  },
+  "dependencies": {
+    "@jiff/common": "^0.0.0"
+  }
+}

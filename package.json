@@ -1,0 +1,22 @@
+{
+  "name": "@jiff/monorepo",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "lerna run build",
+    "prettier": "prettier -l \"packages/**/src/*.{js,ts,json,md}\"",
+    "prettier:fix": "prettier -wl \"packages/**/src/*.{js,ts,json,md}\"",
+    "test": "lerna run test",
+    "lint": "lerna run lint",
+    "prepublishOnly": "lerna run prepublishOnly",
+    "prepare": "lerna run prepare"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.7",
+    "lerna": "^7.4.1",
+    "prettier": "^3.0.3",
+    "typescript": "^5.2.2"
+  }
+}
