@@ -14,7 +14,7 @@
     "prepare": "lerna run prepare"
   },
   "devDependencies": {
-    "@types/node": "^20.8.7",
+    "@types/node": "^20.11.0",
     "lerna": "^7.4.1",
     "prettier": "^3.0.3",
     "typescript": "^5.2.2"
