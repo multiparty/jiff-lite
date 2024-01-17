@@ -7,3 +7,25 @@ Point is to port the current Jiff lib such that we can use it in React/Vue etc. 
 `share`: `client/api/sharing.js, line 7`
 `open`: `client/api/sharing.js, line 80`
 `sadd`: `client/protocols/numbers/arithmetic.js`
+
+`sadd` in turn requires - 
+
+1. `this.jiff.helpers.mod`: Performs modular arithmetic.
+2. `this.jiff.share_helpers['+']`: Adds values of two shares.
+3. `this.when_both_ready`: Synchronizes operations until both shares are ready.
+4. `this.jiff.SecretShare`: Constructs a new `SecretShare` object.
+
+`We need `SecretShare` for a few things. First: `sadd` is a method in `SecretShare.prototype` - we can talk about if we need this, but we will keep this structure. `sadd` also needs to return a `SecretShare`.
+
+We return a `SecretShare` instance in `sadd` to encapsulate the result of the addition operation in a share object. This allows for consistent handling of shared values and enables further operations to be performed on the result using the methods and properties provided by the `SecretShare` class. This approach maintains the secrecy and integrity of the data while facilitating the continuation of secure computations.
+
+`SecretShare` should also have the following members (data/method - TBD).
+
+1. `value`: The value of the secret share.
+2. `holders`: Array of parties holding the share.
+3. `threshold`: Minimum number of parties needed to reconstruct the secret.
+4. `Zp`: The prime number defining the field for modular arithmetic.
+5. `jiff`: Instance of the JIFF client containing necessary methods and properties.
+
+
+`Zp` refers to a prime number used in modular arithmetic operations within JIFF. In such a context, all arithmetic operations (addition, subtraction, multiplication, etc.) are performed modulo `Zp`. This ensures that the results of computations stay within a finite field of size `p`, which is crucial for maintaining the mathematical properties needed for secure computation and cryptographic protocols.
