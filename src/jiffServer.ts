@@ -12,12 +12,11 @@ interface ComputationMaps {
     keys: { [key: string]: { [partyId: string]: string } };
     secretKeys: { [key: string]: string };
     freeParties: { [key: string]: { [partyId: string]: boolean } };
-  }
-  
-  interface SocketMaps {
+}
+
+interface SocketMaps {
     socketId: { [key: string]: string };
     computationId: { [key: string]: string };
     partyId: { [key: string]: string };
-  }
+}
 
-  
