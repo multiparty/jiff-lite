@@ -101,3 +101,16 @@ We return a `SecretShare` instance in `sadd` to encapsulate the result of the ad
 
 
 [UML](https://lucid.app/lucidchart/99958fb2-8a39-40cd-9797-5e5327f274ee/edit?viewport_loc=-2447%2C-1626%2C4894%2C2473%2CHWEp-vi-RSFO&invitationId=inv_7d9db5e2-3ebd-44dd-804b-ef3ade981056) of current Jiff layout (wip)
+
+
+## Open
+ref. [`jiff_open`](https://github.com/abhinavmir/jiff/blob/e062e840611e58bf98605da352d1ae69c115c080/lib/client/protocols/shamir/open.js#L40)
+When called, `jiff_open` first checks if the `share` belongs to the given JIFF instance. It then determines the parties involved in opening the share. If no parties are specified, it defaults to all parties in the computation.
+
+It assigns an operation ID (`op_id`) for tracking and consistency. If the calling party holds a part of the secret (`share.holders` includes the party's ID), the function refreshes the share to keep the original secret secure.
+
+Next, `jiff_open` broadcasts the refreshed share to all specified parties using `jiff_broadcast`. If the calling party is a receiver (listed in `parties`), it prepares to reconstruct the secret. It waits until enough shares (as per the threshold) are received.
+
+Once enough shares are received, the function reconstructs the secret using Lagrange interpolation in `jiff_lagrange`. This involves calculating Lagrange coefficients for each share and combining them to find the secret.
+
+The promise resolves with the reconstructed secret, allowing parties to access it. If the calling party is neither a holder nor a receiver, the function returns null, indicating no action is required from that party.
