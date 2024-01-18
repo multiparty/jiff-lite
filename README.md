@@ -105,6 +105,7 @@ We return a `SecretShare` instance in `sadd` to encapsulate the result of the ad
 
 ## Open
 ref. [`jiff_open`](https://github.com/abhinavmir/jiff/blob/e062e840611e58bf98605da352d1ae69c115c080/lib/client/protocols/shamir/open.js#L40)
+
 When called, `jiff_open` first checks if the `share` belongs to the given JIFF instance. It then determines the parties involved in opening the share. If no parties are specified, it defaults to all parties in the computation.
 
 It assigns an operation ID (`op_id`) for tracking and consistency. If the calling party holds a part of the secret (`share.holders` includes the party's ID), the function refreshes the share to keep the original secret secure.
