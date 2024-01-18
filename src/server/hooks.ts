@@ -3,6 +3,7 @@
 // import * as mailbox from './mailbox.js';
 import JIFFServer from '../jiffServer';
 
+// Keeps compiler happy, but this needs a lot of work!
 class ServerHooks {
   jiff: JIFFServer;
 
