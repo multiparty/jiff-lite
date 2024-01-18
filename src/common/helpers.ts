@@ -65,3 +65,15 @@ export const number_to_bits = (number: number, length?: number): number[] => {
   }
   return bits;
 };
+
+
+// @TODO: This is a hack to get the compiler to stop complaining, but we want to actually do something with the jiffClient
+export function helpers(jiffClient: any) 
+{
+  return {
+    random: random,
+    mod: mod,
+    get_party_number: get_party_number,
+    number_to_bits: number_to_bits
+  };
+}

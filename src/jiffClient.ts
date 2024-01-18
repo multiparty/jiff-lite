@@ -1,3 +1,5 @@
+import { helpers } from './common/helpers';
+
 export class JiffClient {
     hostname: string;
     computation_id: string;
@@ -14,5 +16,8 @@ export class JiffClient {
         this.options.secret_key = null;
         this.options.public_key = null;
         this.helpers = {};
+        
+        // defs
+        helpers(this)
     }
 }
