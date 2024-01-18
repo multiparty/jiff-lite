@@ -167,4 +167,38 @@ In an MPC computation, such as computing the sum of inputs from multiple parties
 3. **Computing Sum**: Parties use `sadd` to securely add up their shares. This is done locally without revealing individual inputs.
 4. **Revealing Result**: The sum (a secret share) is opened to all or specified parties using `open`, revealing the final computation result.
 
-Now, to reconstruct this in TypeScript, such that it works in React or Vue - we'd need -
+
+Now, to reconstruct this in TypeScript, such that it works in React or Vue - we can start at the bottom.
+
+The first thing we can build is the `mailbox` - which I haven't talked about yet. `mailbox` is used for communication between multiple parties. This is done via `socket.io-client`, which is great because it allows for the code to run in browser. 
+
+```javascript
+var io = require('socket.io-client');
+
+function guardedSocket(jiffClient) {
+  jiffClient.options.socketOptions = Object.assign({}, defaultSocketOptions, jiffClient.options.socketOptions);
+
+  // Create plain socket io object which we will wrap in this
+  var socket = io(jiffClient.hostname, jiffClient.options.socketOptions);
+  socket.old_disconnect = socket.disconnect;
+  socket.mailbox = linked_list(); // for outgoing messages
+  socket.empty_deferred = null; // gets resolved whenever the mailbox is empty
+  socket.jiffClient = jiffClient;
+
+  // add functionality to socket
+  socket.safe_emit = safe_emit.bind(socket);
+  socket.resend_mailbox = resend_mailbox.bind(socket);
+  socket.disconnect = disconnect.bind(socket);
+  socket.safe_disconnect = safe_disconnect.bind(socket);
+  socket.is_empty = is_empty.bind(socket);
+
+  return socket;
+}
+```
+
+[Here](https://github.com/abhinavmir/jiff/blob/e062e840611e58bf98605da352d1ae69c115c080/lib/client/socket/mailbox.js#L24) you can see that we are "duck patching" existing socket object with more members.
+
+We set the socket's default disconnect to `old_disconnect`, add in a mailbox, which is a linked list, set a `jiffClient` to it, etc. etc.
+
+This is the first functionality I want to get working. 
+
