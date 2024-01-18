@@ -115,3 +115,56 @@ Next, `jiff_open` broadcasts the refreshed share to all specified parties using 
 Once enough shares are received, the function reconstructs the secret using Lagrange interpolation in `jiff_lagrange`. This involves calculating Lagrange coefficients for each share and combining them to find the secret.
 
 The promise resolves with the reconstructed secret, allowing parties to access it. If the calling party is neither a holder nor a receiver, the function returns null, indicating no action is required from that party.
+
+
+# sadd
+
+`sadd` is a method for securely adding two secret shares. It performs addition while preserving the confidentiality of the individual shares. 
+
+When `sadd` is invoked with a secret share `o`:
+
+1. It first checks if `o` belongs to the same JIFF instance and has the same modulus field (`Zp`). It also checks if both shares are held by the same parties.
+
+2. The method prepares a function, `ready`, that defines how to add the values of the two shares. This is done using the share helpers and modulo arithmetic to ensure results stay within the field `Zp`.
+
+3. The `sadd` method then creates a new `SecretShare` object. This object represents the sum of the two shares. The creation of this new share is deferred until both original shares are ready to be operated on.
+
+4. The method returns this new `SecretShare` object. This share will become the sum of the two inputs once both are ready.
+
+The `sadd` method allows the parties holding the shares to compute the sum without revealing their individual share values. The computation is performed locally by each party.
+
+
+# How it all comes together
+
+### Sharing Secrets (`share`)
+- **Process**: The `share` function is used to distribute a secret among parties. A secret (input) is divided into shares, one for each party, using Shamir's Secret Sharing scheme.
+- **Key Steps**:
+  1. Generate a random polynomial with the secret as the constant term and a degree one less than the threshold.
+  2. Compute shares of the secret for each party by evaluating the polynomial at values corresponding to each party's ID.
+  3. Encrypt and send each share to its respective party.
+
+### Secure Addition (`sadd`)
+- **Purpose**: `sadd` enables the secure addition of two secret shares, producing a new secret share representing their sum.
+- **Key Steps**:
+  1. Check if the shares belong to the same JIFF instance and field (`Zp`).
+  2. Define a function (`ready`) to add the values of the two shares, using modular arithmetic.
+  3. Create a new `SecretShare` object to represent the sum.
+  4. Return this new share, which gets resolved once both original shares are ready.
+
+### Opening Shares (`open`)
+- **Functionality**: `open` reveals the value of a shared secret to specified parties.
+- **Key Steps**:
+  1. Check if the share belongs to the JIFF instance and identify the involved parties.
+  2. If the calling party holds a part of the secret, refresh the share to maintain secrecy.
+  3. Broadcast the refreshed share to specified parties using `jiff_broadcast`.
+  4. Reconstruct the secret using Lagrange interpolation when enough shares are received.
+
+### Bringing It All Together
+In an MPC computation, such as computing the sum of inputs from multiple parties:
+
+1. **Initialization**: Each party connects to a server, initializing their JIFF instance.
+2. **Sharing Inputs**: Each party uses `share` to distribute their input among all parties.
+3. **Computing Sum**: Parties use `sadd` to securely add up their shares. This is done locally without revealing individual inputs.
+4. **Revealing Result**: The sum (a secret share) is opened to all or specified parties using `open`, revealing the final computation result.
+
+Now, to reconstruct this in TypeScript, such that it works in React or Vue - we'd need -
