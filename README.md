@@ -2,6 +2,13 @@
 
 ref. [jiff-react](https://github.com/abhinavmir/jiff-react)
 
+
+We want the end result to Just Work(™) with modern frameworks. An example of what it should look like is hosted at [jiff-react.vercel.app](https://jiff-react.vercel.app/).
+
+The functions are stubs as of now, because for some reason the server written in express cannot expose the API correctly (outlined in an issue [here](https://github.com/multiparty/jiff/issues/255)). Still investigating. Anyway, onto the writeup and documentation of everything we need for a working ReactJS based MPC library starts belwo.
+
+### Jiff-Lite: What we know, and what we need.
+
 Point is to port the current Jiff lib such that we can use it in React/Vue etc. The first thing we'll do is port `sum`, which uses `share`, `sadd`, `open` as the base functions. Next will be `median`. Current `jiff` sample of `median` can be found in `jiff` branch [`median-demo`](https://github.com/multiparty/jiff/tree/median_demo). I am not developing in the jiff-lite repo of `multiparty` since a lot of work is still TBD, and I do not want to make assumptions about libraries from the beginning. Often times, harmless libs pollute the `dist` with `node`-first libs.
 
 `share`: [`client/api/sharing.js, line 39`]()
