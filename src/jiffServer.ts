@@ -4,6 +4,7 @@ import * as $ from 'jquery-deferred';
 import * as helpers from './common/helpers';
 import * as computer from './common/compute';
 
+import Hooks from './server/hooks';
 
 interface ComputationMaps {
     clientIds: { [key: string]: string[] };
@@ -20,3 +21,20 @@ interface SocketMaps {
     partyId: { [key: string]: string };
 }
 
+class JIFFServer
+{
+    options: any;
+    http: any;
+    sodium: typeof sodium | undefined;
+    computationMaps: ComputationMaps;
+    socketMaps: SocketMaps;
+    mailbox: { [key: string]: any };
+    extensions: any[];
+    computation_instances_map: { [key: string]: any };
+    // computation_instances_deferred: { [key: string]: JQuery.Deferred<any, any, any> };
+    hooks: Hooks;
+    cryptoMap: { [key: string]: any };
+    // cryptoProviderHandlers: CryptoProviderHandlers;
+}
+
+export default JIFFServer;
