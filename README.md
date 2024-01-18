@@ -98,3 +98,6 @@ We return a `SecretShare` instance in `sadd` to encapsulate the result of the ad
 - Party 2 computes:
   - $\text{share}_{2,1} = 6 \mod 17$
   - $\text{share}_{2,2} = 10 \mod 17$
+
+
+[UML](https://lucid.app/lucidchart/99958fb2-8a39-40cd-9797-5e5327f274ee/edit?viewport_loc=-2447%2C-1626%2C4894%2C2473%2CHWEp-vi-RSFO&invitationId=inv_7d9db5e2-3ebd-44dd-804b-ef3ade981056) of current Jiff layout (wip)
