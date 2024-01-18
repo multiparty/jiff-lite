@@ -34,6 +34,67 @@ We return a `SecretShare` instance in `sadd` to encapsulate the result of the ad
 
 `internal_share` is bound to `jiff_share` via `jiffClient.internal_share = shareProtocol.jiff_share.bind(null, jiffClient);`. Let's quickly look at that.
 
-[jiff_share](https://github.com/abhinavmir/jiff/blob/2d61b98d7c3c408cc59cfb486b56ab269a20ab1b/lib/client/protocols/shamir/share.js#L72) can be found in `client/protocols/shamir/share.js`.
+[jiff_share](https://github.com/abhinavmir/jiff/blob/2d61b98d7c3c408cc59cfb486b56ab269a20ab1b/lib/client/protocols/shamir/share.js#L72) can be found in `client/protocols/shamir/share.js`. This is how it works.
 
+1. **Initialization**: 
+   - Validates and sets default values for parameters like `threshold`, `receivers_list`, `senders_list`, and `Zp`.
+   - Generates a unique `share_id` if not provided.
 
+2. **Role Determination**:
+   - Determines whether the current party is a sender, a receiver, or both. If it's neither, the function exits early with an empty result.
+
+3. **Share Computation for Senders**:
+   - If the party is a sender, it computes shares of the secret for each receiver.
+   - This computation involves generating a random polynomial with the secret as the constant term, and the degree is one less than the threshold.
+   - Evaluates this polynomial at values corresponding to each receiver's ID to obtain their share.
+
+4. **Encryption and Transmission**:
+   - Each computed share is encrypted and signed to ensure confidentiality and authenticity.
+   - The shares are then sent to their respective receivers over a secure channel.
+
+5. **Receiving and Wrapping Shares**:
+   - If the party is a receiver, it sets up a promise for each share it expects to receive.
+   - As shares arrive (possibly out of order), the promises are resolved.
+   - Each received share is wrapped in a `SecretShare` object, which encapsulates the share and provides methods for further MPC operations.
+
+6. **Result Compilation**:
+   - The function compiles a map where each key is a sender's ID, and the corresponding value is the `SecretShare` object received from that sender.
+   - If the party is not a receiver, this map will be empty.
+
+7. **Return**:
+   - Returns the map of `SecretShare` objects. This allows the receiving parties to use these shares for subsequent MPC operations like addition, multiplication, etc.
+
+### Example 
+
+#### Parties
+- Party 1: Shares secret \( s_1 = 1 \)
+- Party 2: Shares secret \( s_2 = 2 \)
+
+#### Threshold
+- Threshold \( t = 2 \)
+
+#### Polynomial Generation
+- Party 1's polynomial: \( f_1(x) = 1 + a_1 \cdot x \) (where \( a_1 \) is a random coefficient).
+- Party 2's polynomial: \( f_2(x) = 2 + a_2 \cdot x \) (where \( a_2 \) is another random coefficient).
+
+#### Share Computation
+- Party 1 computes:
+  - \( \text{share}_{1,1} = f_1(1) = 1 + a_1 \cdot 1 \)
+  - \( \text{share}_{1,2} = f_1(2) = 1 + a_1 \cdot 2 \)
+- Party 2 computes:
+  - \( \text{share}_{2,1} = f_2(1) = 2 + a_2 \cdot 1 \)
+  - \( \text{share}_{2,2} = f_2(2) = 2 + a_2 \cdot 2 \)
+
+#### Share Distribution
+- Party 1 sends \( \text{share}_{1,2} \) to Party 2 and keeps \( \text{share}_{1,1} \).
+- Party 2 sends \( \text{share}_{2,1} \) to Party 1 and keeps \( \text{share}_{2,2} \).
+
+#### Example Values (Assuming \( a_1 = 3 \) and \( a_2 = 4 \)):
+- Party 1's polynomial: \( f_1(x) = 1 + 3x \).
+- Party 2's polynomial: \( f_2(x) = 2 + 4x \).
+- Party 1 computes:
+  - \( \text{share}_{1,1} = 4 \mod 17 \)
+  - \( \text{share}_{1,2} = 7 \mod 17 \)
+- Party 2 computes:
+  - \( \text{share}_{2,1} = 6 \mod 17 \)
+  - \( \text{share}_{2,2} = 10 \mod 17 \)
