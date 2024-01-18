@@ -29,3 +29,5 @@ We return a `SecretShare` instance in `sadd` to encapsulate the result of the ad
 
 
 `Zp` refers to a prime number used in modular arithmetic operations within JIFF. In such a context, all arithmetic operations (addition, subtraction, multiplication, etc.) are performed modulo `Zp`. This ensures that the results of computations stay within a finite field of size `p`, which is crucial for maintaining the mathematical properties needed for secure computation and cryptographic protocols.
+
+[`jiffClient.share`](https://github.com/abhinavmir/jiff/blob/2d61b98d7c3c408cc59cfb486b56ab269a20ab1b/lib/client/api/sharing.js#L39) - needs `internal_share` (the checks `share` performs are important but mostly use `typeof()` and checks if `secret` is greater than `zp`). `share` is Alice's input that Bob shouldn't know, Bob should only know Bob's input and the sum of Alice and Bob's input. Of course, this is trivial since he can subtract and reach Alice's input, but this is just an example. If Alice, Bob, and Rajesh are computing a total, you can see how probability of finding individual inputs decreases.
