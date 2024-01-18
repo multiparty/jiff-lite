@@ -67,34 +67,34 @@ We return a `SecretShare` instance in `sadd` to encapsulate the result of the ad
 ### Example 
 
 #### Parties
-- Party 1: Shares secret \( s_1 = 1 \)
-- Party 2: Shares secret \( s_2 = 2 \)
+- Party 1: Shares secret $s_1 = 1$
+- Party 2: Shares secret $s_2 = 2$
 
 #### Threshold
-- Threshold \( t = 2 \)
+- Threshold $t = 2$
 
 #### Polynomial Generation
-- Party 1's polynomial: \( f_1(x) = 1 + a_1 \cdot x \) (where \( a_1 \) is a random coefficient).
-- Party 2's polynomial: \( f_2(x) = 2 + a_2 \cdot x \) (where \( a_2 \) is another random coefficient).
+- Party 1's polynomial: $f_1(x) = 1 + a_1 \cdot x$ (where $a_1$ is a random coefficient).
+- Party 2's polynomial: $f_2(x) = 2 + a_2 \cdot x$ (where $a_2$ is another random coefficient).
 
 #### Share Computation
 - Party 1 computes:
-  - \( \text{share}_{1,1} = f_1(1) = 1 + a_1 \cdot 1 \)
-  - \( \text{share}_{1,2} = f_1(2) = 1 + a_1 \cdot 2 \)
+  - $\text{share}_{1,1} = f_1(1) = 1 + a_1 \cdot 1$
+  - $\text{share}_{1,2} = f_1(2) = 1 + a_1 \cdot 2$
 - Party 2 computes:
-  - \( \text{share}_{2,1} = f_2(1) = 2 + a_2 \cdot 1 \)
-  - \( \text{share}_{2,2} = f_2(2) = 2 + a_2 \cdot 2 \)
+  - $\text{share}_{2,1} = f_2(1) = 2 + a_2 \cdot 1$
+  - $\text{share}_{2,2} = f_2(2) = 2 + a_2 \cdot 2$
 
 #### Share Distribution
-- Party 1 sends \( \text{share}_{1,2} \) to Party 2 and keeps \( \text{share}_{1,1} \).
-- Party 2 sends \( \text{share}_{2,1} \) to Party 1 and keeps \( \text{share}_{2,2} \).
+- Party 1 sends $\text{share}_{1,2}$ to Party 2 and keeps $\text{share}_{1,1}$.
+- Party 2 sends $\text{share}_{2,1}$ to Party 1 and keeps $\text{share}_{2,2}$.
 
-#### Example Values (Assuming \( a_1 = 3 \) and \( a_2 = 4 \)):
-- Party 1's polynomial: \( f_1(x) = 1 + 3x \).
-- Party 2's polynomial: \( f_2(x) = 2 + 4x \).
+#### Example Values (Assuming $a_1 = 3$ and $a_2 = 4$):
+- Party 1's polynomial: $f_1(x) = 1 + 3x$.
+- Party 2's polynomial: $f_2(x) = 2 + 4x$.
 - Party 1 computes:
-  - \( \text{share}_{1,1} = 4 \mod 17 \)
-  - \( \text{share}_{1,2} = 7 \mod 17 \)
+  - $\text{share}_{1,1} = 4 \mod 17$
+  - $\text{share}_{1,2} = 7 \mod 17$
 - Party 2 computes:
-  - \( \text{share}_{2,1} = 6 \mod 17 \)
-  - \( \text{share}_{2,2} = 10 \mod 17 \)
+  - $\text{share}_{2,1} = 6 \mod 17$
+  - $\text{share}_{2,2} = 10 \mod 17$
