@@ -26,6 +26,13 @@ interface Options {
     [key: string]: any; // for additional properties
 }
 
+/*
+    * Create a computation instance for a server.
+    * @param {Object} jiff - the jiff library instance.
+    * @param {string} computation_id - the id of the computation.
+    * @param {Object} options - the options to initialize the server with.
+    * @returns {Object} - the server instance.
+*/
 function create_computation_instance
     (jiff: typeof JiffClient, computation_id: string, options: Options): any {
     options = Object.assign({}, options);
@@ -35,9 +42,9 @@ function create_computation_instance
     options.public_key = null;
     options.__internal_socket = new InternalSocket(jiff, computation_id);
     var computation_instance = new JiffClient(options.party_id, computation_id, options);
-    
+
     // @TODO - Figure out where the server member in jiff codebase is
-    computation_instance.server = jiff; 
+    computation_instance.server = jiff;
 
     return computation_instance;
 }
